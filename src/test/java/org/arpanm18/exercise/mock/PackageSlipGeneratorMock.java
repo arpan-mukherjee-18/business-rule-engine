@@ -12,6 +12,11 @@ public class PackageSlipGeneratorMock implements PackageSlipGenerator {
         this.outcome = ProcessorConstants.PACKING_SLIP_OUTCOME;
     }
 
+    @Override
+    public void generateDuplicateSlip() {
+        this.outcome = ProcessorConstants.DUPLICATE_PACKING_SLIP_OUTCOME;
+    }
+
     public String getOutcome() {
         return outcome;
     }
