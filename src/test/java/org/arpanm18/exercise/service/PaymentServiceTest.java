@@ -38,4 +38,17 @@ public class PaymentServiceTest {
         assertTrue(outputs.contains(new Output(Action.GENERATE_DUPLICATE_PACKING_SLIP)));
     }
 
+    @Test
+    void shouldActivateMembershipForMembersWhenPaymentIsForMembershipActivation(){
+        //given
+        Product physicalProduct = new Product(Action.ACTIVATE_MEMBERSHIP);
+
+        //when
+        Set<Output>  outputs = paymentService.purchase(physicalProduct);
+
+        //then
+        assertTrue(outputs.contains(new Output(Action.ACTIVATE_MEMBERSHIP)));
+    }
+
+
 }

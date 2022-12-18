@@ -4,6 +4,7 @@ import org.arpanm18.exercise.dto.Output;
 import org.arpanm18.exercise.dto.Product;
 import org.arpanm18.exercise.rule.DuplicatePackingSlipRule;
 import org.arpanm18.exercise.rule.GeneratePackingSlipRule;
+import org.arpanm18.exercise.rule.MembershipActivationRule;
 import org.arpanm18.exercise.rule.PaymentRule;
 
 import java.util.Set;
@@ -14,7 +15,7 @@ public class PaymentService {
     private final Set<PaymentRule> paymentRules;
 
     public PaymentService() {
-        paymentRules = Set.of(new GeneratePackingSlipRule(), new DuplicatePackingSlipRule());
+        paymentRules = Set.of(new GeneratePackingSlipRule(), new DuplicatePackingSlipRule(), new MembershipActivationRule());
     }
 
     public Set<Output> purchase(Product product) {
