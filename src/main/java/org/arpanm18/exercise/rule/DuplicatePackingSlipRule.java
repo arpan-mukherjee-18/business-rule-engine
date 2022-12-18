@@ -6,12 +6,11 @@ import org.arpanm18.exercise.dto.Product;
 
 import java.util.Set;
 
-public class GeneratePackingSlipRule implements PaymentRule {
-
+public class DuplicatePackingSlipRule implements PaymentRule {
     private final Set<Action> validActions;
 
-    public GeneratePackingSlipRule() {
-        validActions = Set.of(Action.PURCHASE_PHYSICAL_PRODUCT, Action.PURCHASE_BOOK);
+    public DuplicatePackingSlipRule() {
+        validActions = Set.of(Action.PURCHASE_BOOK);
     }
 
     @Override
@@ -21,6 +20,6 @@ public class GeneratePackingSlipRule implements PaymentRule {
 
     @Override
     public Output doProcess(Product product) {
-        return new Output(Action.GENERATE_PACKING_SLIP);
+        return new Output(Action.GENERATE_DUPLICATE_PACKING_SLIP);
     }
 }

@@ -5,7 +5,9 @@ import org.arpanm18.exercise.dto.Output;
 import org.arpanm18.exercise.dto.Product;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PaymentServiceTest {
 
@@ -17,22 +19,23 @@ public class PaymentServiceTest {
         Product physicalProduct = new Product(Action.PURCHASE_PHYSICAL_PRODUCT);
 
         //when
-        Output output = paymentService.purchase(physicalProduct);
+        Set<Output> outputs = paymentService.purchase(physicalProduct);
 
         //then
-        assertEquals(Action.GENERATE_PACKING_SLIP, output.action());
+        assertTrue(outputs.contains(new Output(Action.GENERATE_PACKING_SLIP)));
     }
 
     @Test
-    void shouldGenerateAOperationUnsupportedWhenPaymentIsForOperationUnsupported(){
+    void shouldGenerateAPackingSlipAndDuplicateSlipForShippingWhenPaymentIsForABook(){
         //given
-        Product physicalProduct = new Product(Action.OPERATION_UNSUPPORTED);
+        Product physicalProduct = new Product(Action.PURCHASE_BOOK);
 
         //when
-        Output output = paymentService.purchase(physicalProduct);
+        Set<Output>  outputs = paymentService.purchase(physicalProduct);
 
         //then
-        assertEquals(Action.OPERATION_UNSUPPORTED, output.action());
+        assertTrue(outputs.contains(new Output(Action.GENERATE_PACKING_SLIP)));
+        assertTrue(outputs.contains(new Output(Action.GENERATE_DUPLICATE_PACKING_SLIP)));
     }
 
 }

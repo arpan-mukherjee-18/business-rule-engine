@@ -1,28 +1,24 @@
 package org.arpanm18.exercise.service;
 
-import org.arpanm18.exercise.dto.Action;
 import org.arpanm18.exercise.dto.Output;
 import org.arpanm18.exercise.dto.Product;
+import org.arpanm18.exercise.rule.DuplicatePackingSlipRule;
 import org.arpanm18.exercise.rule.GeneratePackingSlipRule;
 import org.arpanm18.exercise.rule.PaymentRule;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PaymentService {
 
     private final Set<PaymentRule> paymentRules;
 
     public PaymentService() {
-        Set<PaymentRule> rules = new LinkedHashSet<>();
-        rules.add(new GeneratePackingSlipRule());
-        paymentRules = Collections.unmodifiableSet(rules);
+        paymentRules = Set.of(new GeneratePackingSlipRule(), new DuplicatePackingSlipRule());
     }
 
-
-    public Output purchase(Product product) {
+    public Set<Output> purchase(Product product) {
         return this.paymentRules.stream().filter(paymentRule -> paymentRule.canProcess(product))
-                .map(paymentRule -> paymentRule.doProcess(product)).findFirst().orElse(new Output(Action.OPERATION_UNSUPPORTED));
+                .map(paymentRule -> paymentRule.doProcess(product)).collect(Collectors.toSet());
     }
 }
