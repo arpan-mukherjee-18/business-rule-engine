@@ -50,5 +50,17 @@ public class PaymentServiceTest {
         assertTrue(outputs.contains(new Output(Action.ACTIVATE_MEMBERSHIP)));
     }
 
+    @Test
+    void shouldUpgradeMembershipForMembersWhenPaymentIsForMembershipUpgrade(){
+        //given
+        Product physicalProduct = new Product(Action.UPGRADE_MEMBERSHIP);
+
+        //when
+        Set<Output>  outputs = paymentService.purchase(physicalProduct);
+
+        //then
+        assertTrue(outputs.contains(new Output(Action.UPGRADE_MEMBERSHIP)));
+    }
+
 
 }
