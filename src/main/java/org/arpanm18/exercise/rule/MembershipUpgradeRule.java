@@ -19,7 +19,7 @@ public class MembershipUpgradeRule implements PaymentRule{
     }
 
     @Override
-    public Output doProcess(Product product) {
-        return new Output(Action.UPGRADE_MEMBERSHIP);
+    public Set<Output> doProcess(Product product) {
+        return Set.of(new Output(Action.UPGRADE_MEMBERSHIP), new Output(Action.SEND_EMAIL_NOTIFICATIONS));
     }
 }

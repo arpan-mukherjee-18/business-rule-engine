@@ -20,7 +20,7 @@ public class GeneratePackingSlipRule implements PaymentRule {
     }
 
     @Override
-    public Output doProcess(Product product) {
-        return new Output(Action.GENERATE_PACKING_SLIP);
+    public Set<Output> doProcess(Product product) {
+        return Set.of(new Output(Action.GENERATE_PACKING_SLIP));
     }
 }

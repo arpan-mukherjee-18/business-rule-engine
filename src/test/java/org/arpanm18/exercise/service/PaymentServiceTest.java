@@ -9,12 +9,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PaymentServiceTest {
+class PaymentServiceTest {
 
     private final PaymentService paymentService = new PaymentService();
 
     @Test
-    void shouldGenerateAPackingSlipForShippingWhenPaymentIsForAPhysicalProduct(){
+    void shouldGenerateAPackingSlipForShippingWhenPaymentIsForAPhysicalProduct() {
         //given
         Product physicalProduct = new Product(Action.PURCHASE_PHYSICAL_PRODUCT);
 
@@ -26,12 +26,12 @@ public class PaymentServiceTest {
     }
 
     @Test
-    void shouldGenerateAPackingSlipAndDuplicateSlipForShippingWhenPaymentIsForABook(){
+    void shouldGenerateAPackingSlipAndDuplicateSlipForShippingWhenPaymentIsForABook() {
         //given
-        Product physicalProduct = new Product(Action.PURCHASE_BOOK);
+        Product book = new Product(Action.PURCHASE_BOOK);
 
         //when
-        Set<Output>  outputs = paymentService.purchase(physicalProduct);
+        Set<Output> outputs = paymentService.purchase(book);
 
         //then
         assertTrue(outputs.contains(new Output(Action.GENERATE_PACKING_SLIP)));
@@ -39,27 +39,44 @@ public class PaymentServiceTest {
     }
 
     @Test
-    void shouldActivateMembershipForMembersWhenPaymentIsForMembershipActivation(){
+    void shouldActivateMembershipForMembersWhenPaymentIsForMembershipActivation() {
         //given
-        Product physicalProduct = new Product(Action.ACTIVATE_MEMBERSHIP);
+        Product membershipActivation = new Product(Action.ACTIVATE_MEMBERSHIP);
 
         //when
-        Set<Output>  outputs = paymentService.purchase(physicalProduct);
+        Set<Output> outputs = paymentService.purchase(membershipActivation);
 
         //then
         assertTrue(outputs.contains(new Output(Action.ACTIVATE_MEMBERSHIP)));
     }
 
     @Test
-    void shouldUpgradeMembershipForMembersWhenPaymentIsForMembershipUpgrade(){
+    void shouldUpgradeMembershipForMembersWhenPaymentIsForMembershipUpgrade() {
         //given
-        Product physicalProduct = new Product(Action.UPGRADE_MEMBERSHIP);
+        Product membershipUpgrade = new Product(Action.UPGRADE_MEMBERSHIP);
 
         //when
-        Set<Output>  outputs = paymentService.purchase(physicalProduct);
+        Set<Output> outputs = paymentService.purchase(membershipUpgrade);
 
         //then
         assertTrue(outputs.contains(new Output(Action.UPGRADE_MEMBERSHIP)));
+    }
+
+
+    @Test
+    void shouldSendEmailForMembersWhenPaymentIsForMembershipActivationOrUpgrade() {
+        //given
+        Product membershipActivation = new Product(Action.ACTIVATE_MEMBERSHIP);
+        Product membershipUpgrade = new Product(Action.UPGRADE_MEMBERSHIP);
+
+
+        //when
+        Set<Output> activationOutputs = paymentService.purchase(membershipActivation);
+        Set<Output> upgradeOutputs = paymentService.purchase(membershipUpgrade);
+
+        //then
+        assertTrue(activationOutputs.contains(new Output(Action.SEND_EMAIL_NOTIFICATIONS)));
+        assertTrue(upgradeOutputs.contains(new Output(Action.SEND_EMAIL_NOTIFICATIONS)));
     }
 
 
