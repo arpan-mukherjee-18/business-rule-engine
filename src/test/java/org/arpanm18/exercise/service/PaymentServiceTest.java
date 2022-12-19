@@ -90,5 +90,19 @@ class PaymentServiceTest {
         assertTrue(outputs.contains(new Output(Action.FIRST_AID_VIDEO)));
     }
 
+    @Test
+    void shouldGenerateCommissionForAgentsWhenPaymentIsForAPhysicalProductOrBook() {
+        //given
+        Product physicalProduct = new Product(Action.PURCHASE_PHYSICAL_PRODUCT);
+        Product book = new Product(Action.PURCHASE_BOOK);
+
+        //when
+        Set<Output> physicalProductOutput = paymentService.purchase(physicalProduct);
+        Set<Output> bookOutputs = paymentService.purchase(book);
+
+        //then
+        assertTrue(physicalProductOutput.contains(new Output(Action.COMMISSION_FOR_AGENTS)));
+        assertTrue(bookOutputs.contains(new Output(Action.COMMISSION_FOR_AGENTS)));
+    }
 
 }
