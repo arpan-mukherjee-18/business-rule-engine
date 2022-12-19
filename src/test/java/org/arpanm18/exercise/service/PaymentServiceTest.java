@@ -62,13 +62,11 @@ class PaymentServiceTest {
         assertTrue(outputs.contains(new Output(Action.UPGRADE_MEMBERSHIP)));
     }
 
-
     @Test
     void shouldSendEmailForMembersWhenPaymentIsForMembershipActivationOrUpgrade() {
         //given
         Product membershipActivation = new Product(Action.ACTIVATE_MEMBERSHIP);
         Product membershipUpgrade = new Product(Action.UPGRADE_MEMBERSHIP);
-
 
         //when
         Set<Output> activationOutputs = paymentService.purchase(membershipActivation);
@@ -77,6 +75,19 @@ class PaymentServiceTest {
         //then
         assertTrue(activationOutputs.contains(new Output(Action.SEND_EMAIL_NOTIFICATIONS)));
         assertTrue(upgradeOutputs.contains(new Output(Action.SEND_EMAIL_NOTIFICATIONS)));
+    }
+
+    @Test
+    void shouldAddFirstAidVideoWhenPaymentIsForLearningToSkiVideo() {
+        //given
+        Product video = new Product(Action.LEARN_TO_SKI_VIDEO);
+
+        //when
+        Set<Output> outputs = paymentService.purchase(video);
+
+        //then
+        assertTrue(outputs.contains(new Output(Action.LEARN_TO_SKI_VIDEO)));
+        assertTrue(outputs.contains(new Output(Action.FIRST_AID_VIDEO)));
     }
 
 

@@ -13,7 +13,9 @@ public class PaymentService {
     private final Set<PaymentRule> paymentRules;
 
     public PaymentService() {
-        paymentRules = Set.of(new GeneratePackingSlipRule(), new DuplicatePackingSlipRule(), new MembershipActivationRule(), new MembershipUpgradeRule());
+        paymentRules = Set.of(new GeneratePackingSlipRule(), new DuplicatePackingSlipRule(),
+                new MembershipActivationRule(), new MembershipUpgradeRule(),
+                new FirstAidVideoAdditionRule());
     }
 
     public Set<Output> purchase(Product product) {
